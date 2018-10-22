@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row :gutter="20">
-      <el-col :span="6">
+      <el-col :xs="24" :sm="10" :md="8" :lg="6">
         <el-card>
           <div slot="header" class="clearfix">
             <span>添加各公司标价</span>
@@ -15,7 +15,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
         <el-card>
           <div slot="header" class="clearfix">
             <span>经济得分</span>
@@ -25,7 +25,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :sm="10" :md="8" :lg="6">
         <el-card>
           <div slot="header" class="clearfix">
             <span>经济得分*0.4</span>
@@ -35,7 +35,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :sm="10" :md="8" :lg="6">
         <el-card>
           <div slot="header" class="clearfix">
             <span>基准价</span>
@@ -44,6 +44,9 @@
             <p>{{ priceCalcuted.avgStander }}</p>
           </div>
         </el-card>
+      </el-col> -->
+      <el-col :xs="24" :sm="10" :md="8" :lg="6">
+        <div id="main"></div>
       </el-col>
     </el-row>
   </div>
@@ -53,7 +56,7 @@
 import { companyScore } from '../../static/script/index.js'
 export default {
   name: 'Home',
-  data () {
+  data() {
     return {
       companyPrice: [],
       inputNums: 5,
@@ -64,14 +67,17 @@ export default {
       }
     }
   },
+  mounted() {
+    this.drawgraph()
+  },
   methods: {
-    resetAll () {
+    resetAll() {
       this.companyPrice = []
       this.priceCalcuted.avgStander = null
       this.priceCalcuted.result = []
       this.priceCalcuted.resultmin = []
     },
-    caculatePrice () {
+    caculatePrice() {
       var inputPrices = this.companyPrice
       console.log(inputPrices)
       console.log(inputPrices.length)
@@ -82,7 +88,7 @@ export default {
       console.log(priceAfter)
       this.priceCalcuted = priceAfter
     },
-    formatInput (prices) {
+    formatInput(prices) {
       var result = []
       prices.forEach(element => {
         if (element !== undefined) {
@@ -90,6 +96,28 @@ export default {
         }
       })
       return result
+    },
+    drawgraph() {
+      var chartObj = this.$echarts.init(document.getElementById('main'))
+      var option = {
+        title: {
+          text: 'ECharts 入门示例'
+        },
+        tooltip: {},
+        legend: {
+          data: ['销量']
+        },
+        xAxis: {
+          data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+        },
+        yAxis: {},
+        series: [{
+          name: '销量',
+          type: 'bar',
+          data: [5, 20, 36, 10, 10, 20]
+        }]
+      }
+      chartObj.setOption(option)
     }
   }
 }
@@ -108,5 +136,10 @@ export default {
 }
 .priceItem:first-child {
   margin-top: 30px;
+}
+#main {
+  width: 600px;
+  height: 400px;
+  margin-top: 50px;
 }
 </style>
