@@ -1,16 +1,14 @@
 <template>
-  <div id="main" :style="{width:'600px',height:'500px'}"></div>
+  <div id="main" :style="{width:'800px',height:'500px'}"></div>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      bj: [98, 91, 89.2, 94.1, 97.2, 94.3],
-      bjm: [37.5, 33.2, 30.1, 35.1, 36.4, 33.9],
-      categlory: ['报价评分', '评分']
     }
   },
+  props: ['priceScore', 'scoreM', 'company', 'cutline'],
   mounted() {
     this.draw()
   },
@@ -90,8 +88,9 @@ export default {
           align: app.config.align,
           verticalAlign: app.config.verticalAlign,
           rotate: app.config.rotate,
-          formatter: '{c}  {name|{a}}',
-          fontSize: 16,
+          // formatter: '{c}  {name|{a}}',
+          formatter: '{c}',
+          fontSize: 12,
           rich: {
             name: {
               textBorderColor: '#fff'
@@ -108,7 +107,7 @@ export default {
           }
         },
         legend: {
-          data: this.categlory
+          data: this.cutline
         },
         toolbox: {
           show: true,
@@ -128,7 +127,8 @@ export default {
           {
             type: 'category',
             axisTick: { show: false },
-            data: ['公司1', '公司2', '公司3', '公司4', '公司5',  '标准均值']
+            // data: ['公司1', '公司2', '公司3', '公司4', '公司5', '标准均值']
+            data: this.company
           }
         ],
         yAxis: [
@@ -138,17 +138,19 @@ export default {
         ],
         series: [
           {
-            name: '报价评分',
+            name: '评分',
             type: 'bar',
             barGap: 0,
             label: labelOption,
-            data: this.bj
+            // data: [98, 91, 89.2, 94.1, 97.2, 94.3]
+            data: this.priceScore
           },
           {
-            name: '评分',
+            name: '评分*0.4',
             type: 'bar',
             label: labelOption,
-            data: this.bjm
+            // data: [37.5, 33.2, 30.1, 35.1, 36.4, 33.9]
+            data: this.scoreM
           }
         ]
       }

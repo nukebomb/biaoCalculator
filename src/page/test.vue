@@ -7,7 +7,9 @@ export default {
   data() {
     return {
       bj: [98, 91, 89.2, 94.1, 97.2, 94.3],
-      bjm: [37.5, 33.2, 30.1, 35.1, 36.4, 33.9]
+      bjm: [37.5, 33.2, 30.1, 35.1, 36.4, 33.9],
+      items: ['公司1', '公司2', '公司3', '公司4', '公司5', '标准均值'],
+      category: ['报价', '评分']
     }
   },
   mounted() {
@@ -89,7 +91,8 @@ export default {
           align: app.config.align,
           verticalAlign: app.config.verticalAlign,
           rotate: app.config.rotate,
-          formatter: '{c}  {name|{a}}',
+          // formatter: '{c}  {name|{a}}',
+          formatter: '{c}',
           fontSize: 16,
           rich: {
             name: {
@@ -107,7 +110,7 @@ export default {
           }
         },
         legend: {
-          data: ['Forest', 'Steppe']
+          data: this.category
         },
         toolbox: {
           show: true,
@@ -127,7 +130,8 @@ export default {
           {
             type: 'category',
             axisTick: { show: false },
-            data: ['公司1', '公司2', '公司3', '公司4', '公司5','标准均值']
+            // data: ['公司1', '公司2', '公司3', '公司4', '公司5', '标准均值']
+            data: this.items
           }
         ],
         yAxis: [
@@ -137,7 +141,7 @@ export default {
         ],
         series: [
           {
-            name: 'Forest',
+            name: '报价',
             type: 'bar',
             barGap: 0,
             label: labelOption,
@@ -145,7 +149,7 @@ export default {
             data: this.bj
           },
           {
-            name: 'Steppe',
+            name: '评分',
             type: 'bar',
             label: labelOption,
             // data: [37.5, 33.2, 30.1, 35.1, 36.4, 33.9]

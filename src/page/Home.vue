@@ -45,8 +45,11 @@
           </div>
         </el-card>
       </el-col> -->
-      <el-col :xs="24" :sm="10" :md="8" :lg="6">
-        <div id="main"></div>
+      <el-col :xs="24" :sm="12" :md="16" :lg="18" v-if="priceCalcuted.avgStander">
+        <graph :price-score="priceCalcuted.result"
+        :score-m="priceCalcuted.resultmin"
+        :company="companies"
+        :cutline="['评分', '评分*0.4']"></graph>
       </el-col>
     </el-row>
   </div>
@@ -54,7 +57,11 @@
 
 <script>
 import { companyScore } from '../../static/script/index.js'
+import Graph from '../components/graph'
 export default {
+  components: {
+    Graph
+  },
   name: 'Home',
   data() {
     return {
@@ -64,18 +71,19 @@ export default {
         avgStander: null,
         result: [],
         resultmin: []
+      },
+      companies: [],
+      childPropsNeed: {
       }
     }
   },
-  mounted() {
-    this.drawgraph()
-  },
+  mounted() {},
   methods: {
     resetAll() {
       this.companyPrice = []
-      this.priceCalcuted.avgStander = null
       this.priceCalcuted.result = []
       this.priceCalcuted.resultmin = []
+      this.priceCalcuted.avgStander = null
     },
     caculatePrice() {
       var inputPrices = this.companyPrice
@@ -87,6 +95,9 @@ export default {
       var priceAfter = companyScore(prices)
       console.log(priceAfter)
       this.priceCalcuted = priceAfter
+      priceAfter.result.forEach((ele, index) => {
+        this.companies.push('报价' + (index + 1))
+      })
     },
     formatInput(prices) {
       var result = []
@@ -96,28 +107,6 @@ export default {
         }
       })
       return result
-    },
-    drawgraph() {
-      var chartObj = this.$echarts.init(document.getElementById('main'))
-      var option = {
-        title: {
-          text: 'ECharts 入门示例'
-        },
-        tooltip: {},
-        legend: {
-          data: ['销量']
-        },
-        xAxis: {
-          data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-        },
-        yAxis: {},
-        series: [{
-          name: '销量',
-          type: 'bar',
-          data: [5, 20, 36, 10, 10, 20]
-        }]
-      }
-      chartObj.setOption(option)
     }
   }
 }
@@ -136,10 +125,5 @@ export default {
 }
 .priceItem:first-child {
   margin-top: 30px;
-}
-#main {
-  width: 600px;
-  height: 400px;
-  margin-top: 50px;
 }
 </style>
