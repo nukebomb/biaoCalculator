@@ -45,9 +45,9 @@
           </div>
         </el-card>
       </el-col> -->
-      <el-col :xs="24" :sm="12" :md="16" :lg="18" v-if="priceCalcuted.avgStander">
-        <graph :price-score="priceCalcuted.result"
-        :score-m="priceCalcuted.resultmin"
+      <el-col :xs="24" :sm="12" :md="16" :lg="18">
+        <graph :price-score="priceScore"
+        :score-m="priceScoreM"
         :company="companies"
         :cutline="['评分', '评分*0.4']"></graph>
       </el-col>
@@ -67,34 +67,37 @@ export default {
     return {
       companyPrice: [],
       inputNums: 5,
-      priceCalcuted: {
-        avgStander: null,
-        result: [],
-        resultmin: []
-      },
-      companies: [],
-      childPropsNeed: {
-      }
+      priceScore: [],
+      priceScoreM: [],
+      avgStander: null,
+      companies: []
     }
   },
-  mounted() {},
+  mounted() { },
   methods: {
     resetAll() {
+      this.companies = []
       this.companyPrice = []
-      this.priceCalcuted.result = []
-      this.priceCalcuted.resultmin = []
-      this.priceCalcuted.avgStander = null
+      this.priceScore = []
+      this.priceScoreM = []
+      this.avgStander = null
     },
     caculatePrice() {
       var inputPrices = this.companyPrice
       console.log(inputPrices)
-      console.log(inputPrices.length)
+      // console.log(inputPrices.length)
       var prices = this.formatInput(inputPrices)
       // console.log(prices)
       // console.log(prices.length)
       var priceAfter = companyScore(prices)
       console.log(priceAfter)
-      this.priceCalcuted = priceAfter
+      this.avgStander = priceAfter.avgStander
+      priceAfter.result.forEach(ele => {
+        this.priceScore.push(ele)
+      })
+      priceAfter.resultmin.forEach(ele => {
+        this.priceScoreM.push(ele)
+      })
       priceAfter.result.forEach((ele, index) => {
         this.companies.push('报价' + (index + 1))
       })
